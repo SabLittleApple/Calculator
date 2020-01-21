@@ -10,6 +10,7 @@ public class CalcEngine {
     private int leftOperand;
     private int rightOperand;
     private Math calculate;
+    private int intermediateResult;
 
     /**
      * Create a CalcEngine.
@@ -26,6 +27,7 @@ public class CalcEngine {
      * on the calculator display.
      */
     public int getDisplayValue() {
+
         return displayValue;
     }
 
@@ -38,8 +40,12 @@ public class CalcEngine {
      */
     public void numberPressed(int number) {
         displayValue = displayValue * 10 + number;
-        if (previousOperator != 0) {
+        if (previousOperator != ' ') {
             rightOperand = displayValue;
+        }
+        if (rightOperand != 0) {
+            intermediateResult = leftOperand;
+            applyPreviousOperator();
         }
     }
 
@@ -48,9 +54,10 @@ public class CalcEngine {
      */
     public void plus() {
         previousOperator = '+';
-        applyPreviousOperator();
-        displayValue = 0;
-
+        if (leftOperand == 0) {
+            leftOperand = displayValue;
+            displayValue = 0;
+        }
     }
 
 
@@ -59,20 +66,17 @@ public class CalcEngine {
      */
     public void minus() {
         previousOperator = '-';
-        applyPreviousOperator();
-        displayValue = 0;
+        if (leftOperand == 0) {
+            leftOperand = displayValue;
+            displayValue = 0;
+        }
     }
 
     /**
      * The '=' button was pressed.
      */
     public int equals() {
-        if (previousOperator == '+') {
-            int result = calculate.addExact(leftOperand, rightOperand);
-            return result;
-        }
-        int result = calculate.subtractExact(leftOperand, rightOperand);
-        return result;
+        return intermediateResult;
     }
 
 
@@ -94,9 +98,14 @@ public class CalcEngine {
      * form the left operand of the new operator.
      */
     public void applyPreviousOperator() {
-        if (previousOperator == '+' || previousOperator == '-') {
-            leftOperand += displayValue;
+        if (previousOperator == '+') {
+            intermediateResult += rightOperand;
+        } else if (previousOperator == '-') {
+            intermediateResult -= rightOperand;
+
         }
+        leftOperand = intermediateResult;
+        displayValue = 0;
     }
 
 
@@ -104,6 +113,7 @@ public class CalcEngine {
      * @return The title of this calculation engine.
      */
     public String getTitle() {
+
         return "Super Calculator";
     }
 
@@ -112,6 +122,7 @@ public class CalcEngine {
      * so it should say something like "Written by H. Simpson".
      */
     public String getAuthor() {
+
         return "Written by Sabrina Melina";
     }
 
@@ -120,14 +131,17 @@ public class CalcEngine {
      * it is, so it should say something like "Version 1.1".
      */
     public String getVersion() {
+
         return "Version 1.1";
     }
 
     public int getLeftOperand() {
+
         return leftOperand;
     }
 
     public int getRightOperand() {
+
         return rightOperand;
     }
 }
