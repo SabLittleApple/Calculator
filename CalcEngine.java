@@ -1,8 +1,8 @@
 /**
  * The main part of the calculator doing the calculations.
  *
- * @version 0.1 (in progress)
- * @author: (Sabrina)
+ * @version 1
+ * @author: Sabrina
  */
 public class CalcEngine {
     private int displayValue;
