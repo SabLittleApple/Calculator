@@ -9,8 +9,7 @@ public class CalcEngine {
     private char previousOperator;
     private int leftOperand;
     private int rightOperand;
-    private Math calculate;
-    private int intermediateResult;
+    private int result;
 
     /**
      * Create a CalcEngine.
@@ -42,9 +41,7 @@ public class CalcEngine {
         displayValue = displayValue * 10 + number;
         if (previousOperator != ' ') {
             rightOperand = displayValue;
-        }
-        if (rightOperand != 0) {
-            intermediateResult = leftOperand;
+            result = leftOperand;
             applyPreviousOperator();
         }
     }
@@ -59,7 +56,6 @@ public class CalcEngine {
             displayValue = 0;
         }
     }
-
 
     /**
      * The 'minus' button was pressed.
@@ -76,7 +72,8 @@ public class CalcEngine {
      * The '=' button was pressed.
      */
     public int equals() {
-        return intermediateResult;
+
+        return result;
     }
 
 
@@ -99,12 +96,11 @@ public class CalcEngine {
      */
     public void applyPreviousOperator() {
         if (previousOperator == '+') {
-            intermediateResult += rightOperand;
+            result += rightOperand;
         } else if (previousOperator == '-') {
-            intermediateResult -= rightOperand;
-
+            result -= rightOperand;
         }
-        leftOperand = intermediateResult;
+        leftOperand = result;
         displayValue = 0;
     }
 
@@ -134,6 +130,7 @@ public class CalcEngine {
 
         return "Version 1.1";
     }
+
 
     public int getLeftOperand() {
 
