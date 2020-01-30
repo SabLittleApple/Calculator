@@ -38,10 +38,23 @@ public class CalcEngine {
      * @param number The number pressed on the calculator.
      */
     public void numberPressed(int number) {
-        displayValue = displayValue * 10 + number;
-        if (previousOperator != ' ') {
+        //if left operand is null
+        if (leftOperand == 0) {
+            displayValue = displayValue * 10 + number;
+            applyPreviousOperator();
+        }
+        //if left operand is NOT null but the right one is null
+        else if (leftOperand != 0 & rightOperand == 0) {
+            displayValue = 0;
+            displayValue = displayValue * 10 + number;
             rightOperand = displayValue;
             result = leftOperand;
+        } else {
+            leftOperand = result;
+            rightOperand = 0;
+            displayValue = 0;
+            displayValue = displayValue * 10 + number;
+            rightOperand = displayValue;
             applyPreviousOperator();
         }
     }
@@ -53,9 +66,15 @@ public class CalcEngine {
         previousOperator = '+';
         if (leftOperand == 0) {
             leftOperand = displayValue;
-            displayValue = 0;
+        } else if (leftOperand != 0 && rightOperand != 0) {
+            result = leftOperand + displayValue;
+            displayValue = result;
         }
+//        else if(leftOperand !=0 && rightOperand ==0){
+//            leftOperand = result;
+//            displayValue = result;
     }
+
 
     /**
      * The 'minus' button was pressed.
@@ -64,7 +83,9 @@ public class CalcEngine {
         previousOperator = '-';
         if (leftOperand == 0) {
             leftOperand = displayValue;
-            displayValue = 0;
+        } else if (leftOperand != 0 && rightOperand != 0) {
+            result = leftOperand - displayValue;
+            displayValue = result;
         }
     }
 
@@ -73,6 +94,29 @@ public class CalcEngine {
      */
     public int equals() {
 
+        if (rightOperand != 0) {
+            if (previousOperator == '+')
+                result = leftOperand + rightOperand;
+
+            if (previousOperator == '-') {
+                result = leftOperand - rightOperand;
+            }
+            displayValue = result;
+        }
+
+        if (leftOperand == 0) {
+            if (previousOperator == '+') {
+                result = leftOperand + rightOperand;
+            }
+            if (previousOperator == '-') {
+                result = leftOperand - rightOperand;
+            }
+        }
+        if (rightOperand == 0) {
+            result = leftOperand;
+        } else {
+            displayValue = result;
+        }
         return result;
     }
 
@@ -95,13 +139,21 @@ public class CalcEngine {
      * form the left operand of the new operator.
      */
     public void applyPreviousOperator() {
-        if (previousOperator == '+') {
+        if (previousOperator == '+' && leftOperand != 0) {
             result += rightOperand;
-        } else if (previousOperator == '-') {
+        } else if (previousOperator == '-' && leftOperand != 0) {
             result -= rightOperand;
+        } else if (previousOperator == '+' && leftOperand == 0) {
+            rightOperand = displayValue;
+            result += rightOperand;
+        } else if (previousOperator == '-' && leftOperand == 0) {
+            rightOperand = displayValue;
+            result += -rightOperand;
+        } else {
+            result = leftOperand;
+            //rightOperand = 0;
         }
-        leftOperand = result;
-        displayValue = 0;
+
     }
 
 
@@ -125,6 +177,15 @@ public class CalcEngine {
     /**
      * @return The version number of this engine. This string is displayed as
      * it is, so it should say something like "Version 1.1".
+     * public int getLeftOperand() {
+     * <p>
+     * return leftOperand;
+     * }
+     * <p>
+     * public int getRightOperand() {
+     * <p>
+     * return rightOperand;
+     * }
      */
     public String getVersion() {
 
@@ -132,13 +193,4 @@ public class CalcEngine {
     }
 
 
-    public int getLeftOperand() {
-
-        return leftOperand;
-    }
-
-    public int getRightOperand() {
-
-        return rightOperand;
-    }
 }
