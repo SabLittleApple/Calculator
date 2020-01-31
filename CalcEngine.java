@@ -15,10 +15,8 @@ public class CalcEngine {
      * Create a CalcEngine.
      */
     public CalcEngine() {
+
         displayValue = 0;
-        leftOperand = 0;
-        rightOperand = 0;
-        previousOperator = ' ';
     }
 
     /**
@@ -38,13 +36,11 @@ public class CalcEngine {
      * @param number The number pressed on the calculator.
      */
     public void numberPressed(int number) {
-        //if left operand is null
+
         if (leftOperand == 0) {
             displayValue = displayValue * 10 + number;
             applyPreviousOperator();
-        }
-        //if left operand is NOT null but the right one is null
-        else if (leftOperand != 0 & rightOperand == 0) {
+        } else if (leftOperand != 0 & rightOperand == 0) {
             displayValue = 0;
             displayValue = displayValue * 10 + number;
             rightOperand = displayValue;
@@ -67,12 +63,9 @@ public class CalcEngine {
         if (leftOperand == 0) {
             leftOperand = displayValue;
         } else if (leftOperand != 0 && rightOperand != 0) {
-            result = leftOperand + displayValue;
+            result = leftOperand + rightOperand;
             displayValue = result;
         }
-//        else if(leftOperand !=0 && rightOperand ==0){
-//            leftOperand = result;
-//            displayValue = result;
     }
 
 
@@ -84,7 +77,7 @@ public class CalcEngine {
         if (leftOperand == 0) {
             leftOperand = displayValue;
         } else if (leftOperand != 0 && rightOperand != 0) {
-            result = leftOperand - displayValue;
+            result = leftOperand - rightOperand;
             displayValue = result;
         }
     }
@@ -138,59 +131,62 @@ public class CalcEngine {
      * calculate an intermediate result. This will
      * form the left operand of the new operator.
      */
+
     public void applyPreviousOperator() {
-        if (previousOperator == '+' && leftOperand != 0) {
-            result += rightOperand;
-        } else if (previousOperator == '-' && leftOperand != 0) {
-            result -= rightOperand;
-        } else if (previousOperator == '+' && leftOperand == 0) {
-            rightOperand = displayValue;
-            result += rightOperand;
-        } else if (previousOperator == '-' && leftOperand == 0) {
-            rightOperand = displayValue;
-            result += -rightOperand;
-        } else {
+        if (previousOperator == '+') {
+            if (leftOperand != 0) {
+                result += rightOperand;
+            } else if (leftOperand == 0) {
+                rightOperand = displayValue;
+                result += rightOperand;
+            }
+        } else if (previousOperator == '-') {
+            if (leftOperand != 0) {
+                result -= rightOperand;
+            } else if (previousOperator == '-' && leftOperand == 0) {
+                rightOperand = displayValue;
+                result += -rightOperand;
+            }
+        }
+        else {
             result = leftOperand;
-            //rightOperand = 0;
+        }
+    }
+
+        /**
+         * @return The title of this calculation engine.
+         */
+        public String getTitle () {
+
+            return "Super Calculator";
         }
 
+        /**
+         * @return The author of this engine. This string is displayed as it is,
+         * so it should say something like "Written by H. Simpson".
+         */
+        public String getAuthor () {
+
+            return "Written by Sabrina Melina";
+        }
+
+        /**
+         * @return The version number of this engine. This string is displayed as
+         * it is, so it should say something like "Version 1.1".
+         * public int getLeftOperand() {
+         * <p>
+         * return leftOperand;
+         * }
+         * <p>
+         * public int getRightOperand() {
+         * <p>
+         * return rightOperand;
+         * }
+         */
+        public String getVersion () {
+
+            return "Version 1.1";
+        }
+
+
     }
-
-
-    /**
-     * @return The title of this calculation engine.
-     */
-    public String getTitle() {
-
-        return "Super Calculator";
-    }
-
-    /**
-     * @return The author of this engine. This string is displayed as it is,
-     * so it should say something like "Written by H. Simpson".
-     */
-    public String getAuthor() {
-
-        return "Written by Sabrina Melina";
-    }
-
-    /**
-     * @return The version number of this engine. This string is displayed as
-     * it is, so it should say something like "Version 1.1".
-     * public int getLeftOperand() {
-     * <p>
-     * return leftOperand;
-     * }
-     * <p>
-     * public int getRightOperand() {
-     * <p>
-     * return rightOperand;
-     * }
-     */
-    public String getVersion() {
-
-        return "Version 1.1";
-    }
-
-
-}
