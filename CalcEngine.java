@@ -2,7 +2,7 @@
  * The main part of the calculator doing the calculations.
  *
  * @version 1
- * @author: Sabrina
+ * @author Sabrina
  */
 public class CalcEngine {
     private int displayValue;
@@ -16,7 +16,8 @@ public class CalcEngine {
      */
     public CalcEngine() {
 
-        displayValue = 0;
+        clear();
+
     }
 
     /**
@@ -40,7 +41,7 @@ public class CalcEngine {
         if (leftOperand == 0) {
             displayValue = displayValue * 10 + number;
             applyPreviousOperator();
-        } else if (leftOperand != 0 & rightOperand == 0) {
+        } else if (rightOperand == 0) {
             displayValue = 0;
             displayValue = displayValue * 10 + number;
             rightOperand = displayValue;
@@ -62,7 +63,7 @@ public class CalcEngine {
         previousOperator = '+';
         if (leftOperand == 0) {
             leftOperand = displayValue;
-        } else if (leftOperand != 0 && rightOperand != 0) {
+        } else if (rightOperand != 0) {
             result = leftOperand + rightOperand;
             displayValue = result;
         }
@@ -76,7 +77,7 @@ public class CalcEngine {
         previousOperator = '-';
         if (leftOperand == 0) {
             leftOperand = displayValue;
-        } else if (leftOperand != 0 && rightOperand != 0) {
+        } else if (rightOperand != 0) {
             result = leftOperand - rightOperand;
             displayValue = result;
         }
@@ -85,7 +86,7 @@ public class CalcEngine {
     /**
      * The '=' button was pressed.
      */
-    public int equals() {
+    public void equals() {
 
         if (rightOperand != 0) {
             if (previousOperator == '+')
@@ -110,7 +111,9 @@ public class CalcEngine {
         } else {
             displayValue = result;
         }
-        return result;
+        leftOperand = result;
+        rightOperand = 0;
+
     }
 
 
@@ -134,16 +137,14 @@ public class CalcEngine {
 
     public void applyPreviousOperator() {
         if (previousOperator == '+') {
-            if (leftOperand != 0) {
-                result += rightOperand;
-            } else if (leftOperand == 0) {
+            if (leftOperand == 0) {
                 rightOperand = displayValue;
-                result += rightOperand;
             }
+            result += rightOperand;
         } else if (previousOperator == '-') {
             if (leftOperand != 0) {
                 result -= rightOperand;
-            } else if (previousOperator == '-' && leftOperand == 0) {
+            } else {
                 rightOperand = displayValue;
                 result += -rightOperand;
             }
